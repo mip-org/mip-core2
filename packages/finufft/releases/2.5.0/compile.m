@@ -1,16 +1,16 @@
 % compile.m
 % Compile FINUFFT MEX file for MIP package distribution.
 %
-% This script is intended to be run by mip-core's compile_packages.m.
+% This script is intended to be run by the channel's compile_packages.m.
 % The working directory is the .dir root, which contains:
-%   finufft_src/     - full finufft repo (build_only)
-%   finufft_matlab/  - matlab/ subdirectory from finufft
+%   finufft_src/  - full finufft repo (from build_sources)
+%   finufft.cpp   - MEX source (from matlab/ subdirectory of finufft)
+%   numbl/        - numbl bindings (from matlab/ subdirectory)
 
 fprintf('=== Compiling FINUFFT MEX file ===\n');
 
 scriptDir = fileparts(mfilename('fullpath'));
 finufftSrc = fullfile(scriptDir, 'finufft_src');
-finufftMatlab = fullfile(scriptDir, 'finufft_matlab');
 buildDir = fullfile(scriptDir, 'build_mex');
 
 % Step 1: Build FINUFFT static libraries using CMake
@@ -72,7 +72,7 @@ end
 % Step 3: Compile MEX file
 fprintf('Compiling MEX file...\n');
 
-mexSrc = fullfile(finufftMatlab, 'finufft.cpp');
+mexSrc = fullfile(scriptDir, 'finufft.cpp');
 includeDir = fullfile(finufftSrc, 'include');
 
 mexArgs = {mexSrc, ...
@@ -90,9 +90,9 @@ if isunix && ~ismac
     mexArgs{end+1} = 'LDFLAGS=$LDFLAGS -static-libstdc++ -static-libgcc';
 end
 
-% Output MEX file into finufft_matlab/ (which is on the addpath)
+% Output MEX file into the package root (which is on the addpath)
 mexArgs{end+1} = '-output';
-mexArgs{end+1} = fullfile(finufftMatlab, 'finufft');
+mexArgs{end+1} = fullfile(scriptDir, 'finufft');
 
 mex(mexArgs{:});
 
