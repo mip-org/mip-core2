@@ -1,0 +1,9 @@
+# finufft needs two clones: the matlab bindings and the full source for building
+source:
+  git: "https://github.com/magland/finufft"
+  subdirectory: "matlab"
+
+# Additional source needed at build time (for MEX/WASM compilation)
+build_sources:
+  - git: "https://github.com/magland/finufft"
+    destination: "finufft_src"

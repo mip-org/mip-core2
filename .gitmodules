@@ -1,0 +1,6 @@
+[submodule "mip-core2/external/yamlmatlab"]
+	path = mip-core2/external/yamlmatlab
+	url = https://github.com/ewiger/yamlmatlab.git
+[submodule "external/yamlmatlab"]
+	path = external/yamlmatlab
+	url = https://github.com/ewiger/yamlmatlab.git
